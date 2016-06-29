@@ -13,7 +13,7 @@ exports.createUser = (req, res) => {
     imageUrl: faker.image.avatar(),
     location, // temp this will come from the request body
     interval,
-    posting: true,
+    posting: false,
     repCount: Math.floor(Math.random() * 51),
   };
 
