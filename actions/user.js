@@ -1,5 +1,6 @@
 const faker = require('faker');
 const userController = require('../controllers/userController');
+const axios = require('axios');
 
 exports.createUser = (req, res) => {
   console.log('REQUEST BODY: ', req.body.interval);
@@ -18,10 +19,54 @@ exports.createUser = (req, res) => {
   };
 
   userController.addUser(user)
-  .then(() => {
-    res.send(user);
+  .then((createdUser) => {
+    const config = {
+      url: 'http://localhost:7000/api/bot/add',
+      method: 'POST',
+      data: {
+        email: createdUser.email,
+        name: createdUser.name,
+        imageUrl: createdUser.imageUrl,
+        repCount: createdUser.repCount,
+      },
+      withCredentials: true,
+    };
+
+    axios(config)
+    .then((response) => {
+      console.log(response.data);
+      userController.updateExtId(createdUser.id, response.data)
+      .then(() => {
+        res.sendStatus(200);
+      });
+    });
   })
   .catch((err) => {
     throw new Error(err);
   });
 };
+
+exports.deleteUser = (req, res) => {
+  const userId = req.body.userId;
+
+  userController.deleteUser(userId, (extId) => {
+    const config = {
+      url: 'http://localhost:7000/api/bot/delete',
+      method: 'POST',
+      data: {
+        userId: extId,
+      },
+      withCredentials: true,
+    };
+
+    axios(config)
+    .then((response) => {
+      console.log(response.data);
+      res.sendStatus(200);
+    });
+  })
+  .catch((err) => {
+    throw new Error(err);
+  });
+};
+

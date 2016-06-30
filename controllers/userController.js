@@ -27,3 +27,50 @@ exports.toggleUserOff = (userId) => {
       },
     });
 };
+
+exports.updateExtId = (userId, extId) => {
+  return User.update({
+    extId,
+  },
+    {
+      where: {
+        id: userId,
+      },
+    });
+};
+
+exports.deleteUser = (userId, cb) => {
+  return User.findOne({
+    where: {
+      id: userId,
+    },
+  })
+  .then((found) => {
+    return User.destroy({
+      where: {
+        id: userId,
+      },
+    })
+    .then(() => {
+      cb(found.extId);
+    });
+  });
+};
+
+// exports.addUsers = () => {
+// Model.bulkCreate
+// };
+
+
+// Project.update(
+//   {
+//     title: 'a very different title now'
+//   },
+//   {
+//     where: { _id : 1 }
+//   })
+//   .then(function (result) { 
+
+//   }, function(rejectedPromiseError){
+
+//   });

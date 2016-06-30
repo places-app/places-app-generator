@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     location: DataTypes.STRING,
     interval: DataTypes.INTEGER,
     posting: DataTypes.BOOLEAN,
+    extId: DataTypes.STRING,
   }, {
     classMethods: {
       associate: (models) => {
