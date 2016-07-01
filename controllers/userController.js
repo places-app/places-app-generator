@@ -5,6 +5,12 @@ exports.addUser = (user) => {
   return User.create(user);
 };
 
+exports.findAll = () => {
+  return User.findAll({
+    attributes: ['id', 'email', 'name', 'imageUrl', 'repCount', 'location', 'interval', 'posting']
+  });
+};
+
 exports.toggleUserOn = (userId) => {
   return User.update({
     posting: true,

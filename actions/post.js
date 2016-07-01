@@ -2,13 +2,16 @@ const userController = require('../controllers/userController');
 const timeControls = require('../utils/timeControls');
 
 exports.start = (req, res) => {
+  console.log("BODY IN START: ", req.body)
   const userId = req.body.userId;
   const interval = req.body.interval;
 
   userController.toggleUserOn(userId)
   .then(() => {
     timeControls.startPostInterval(userId, interval);
-    res.send(200);
+    res.send({
+      posting: true,
+    });
   })
   .catch((err) => {
     throw new Error(err);
@@ -22,7 +25,9 @@ exports.stop = (req, res) => {
   userController.toggleUserOff(userId)
   .then(() => {
     timeControls.stopPostInterval(userId);
-    res.send(200);
+    res.send({
+      posting: false,
+    });
   })
   .catch((err) => {
     throw new Error(err);

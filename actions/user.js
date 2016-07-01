@@ -2,6 +2,14 @@ const faker = require('faker');
 const userController = require('../controllers/userController');
 const axios = require('axios');
 
+exports.retrieveAll = (req, res) => {
+  userController.findAll()
+  .then((bots) => {
+    console.log(bots);
+    res.send(bots);
+  });
+};
+
 exports.createUser = (req, res) => {
   console.log('REQUEST BODY: ', req.body.interval);
 
