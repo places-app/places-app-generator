@@ -7,7 +7,7 @@ exports.start = (req, res) => {
 
   userController.toggleUserOn(userId)
   .then(() => {
-    timeControls.startInterval(userId, interval);
+    timeControls.startPostInterval(userId, interval);
     res.send(200);
   })
   .catch((err) => {
@@ -21,7 +21,7 @@ exports.stop = (req, res) => {
 
   userController.toggleUserOff(userId)
   .then(() => {
-    timeControls.stopInterval(userId);
+    timeControls.stopPostInterval(userId);
     res.send(200);
   })
   .catch((err) => {

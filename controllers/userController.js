@@ -57,6 +57,14 @@ exports.deleteUser = (userId, cb) => {
   });
 };
 
+exports.getExtId = (userId) => {
+  return User.findOne({
+    where: {
+      id: userId,
+    },
+  });
+};
+
 // exports.addUsers = () => {
 // Model.bulkCreate
 // };

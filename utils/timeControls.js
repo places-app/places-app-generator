@@ -1,28 +1,42 @@
 const axios = require('axios');
 const _ = require('lodash');
+const yelp = require('./yelpAPI');
 
 const intervalTracking = [];
 
-let post = (userId) => {
-  const config = {
-    url: 'http://localhost:3000/bot',
-    method: 'POST',
-    data: {
-      message: 'Sample message',
-      userId: userId,
-    },
-    withCredentials: true,
-  };
+// let post = (userId) => {
+//   const config = {
+//     url: 'http://localhost:3000/bot',
+//     method: 'POST',
+//     data: {
+//       message: 'Sample message',
+//       userId: userId,
+//     },
+//     withCredentials: true,
+//   };
 
-  axios(config)
-  .then((response) => {
-    // console.log(response);
-  });
-};
+//   axios(config)
+//   .then((response) => {
+//     // console.log(response);
+//   });
+// };
 
-exports.startInterval = (userId, interval) => {
-  let intervalId = setInterval(() => {
-    post(userId);
+exports.startPostInterval = (userId, interval) => {
+  let indexHolder = [];
+  let offset = 0;
+
+  const intervalId = setInterval(() => {
+    let index = Math.floor(Math.random() * 21);
+    // console.log('indexHolder: ', indexHolder, 'index: ', index)
+    if (indexHolder.indexOf(index) !== -1) {
+      console.log('index collision:')
+      indexHolder = [];
+      offset += 20;
+    }
+
+    yelp.search(userId, index, offset, () => {
+      indexHolder.push(index);
+    });  // cache results
   }, interval);
 
   intervalTracking.push({
@@ -34,7 +48,7 @@ exports.startInterval = (userId, interval) => {
 
 };
 
-exports.stopInterval = (userId) => {
+exports.stopPostInterval = (userId) => {
   const intId = _.remove(intervalTracking, (val) => val.userId === userId);
 
   console.log(intId[0].intervalId);
@@ -42,5 +56,13 @@ exports.stopInterval = (userId) => {
   clearInterval(intId[0].intervalId);
 };
 
+exports.startWalkInterval = (walker) => {
+  setInterval(() => {
+
+    walker();
+
+  }, 10000);
+
+};
 
 
