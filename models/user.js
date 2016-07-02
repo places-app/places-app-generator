@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     moving: DataTypes.BOOLEAN,
     extId: DataTypes.STRING,
     type: DataTypes.STRING,
+    origin: DataTypes.STRING,
+    destination: DataTypes.STRING,
   }, {
     classMethods: {
       associate: (models) => {

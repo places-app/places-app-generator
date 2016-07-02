@@ -38,6 +38,7 @@ console.log('count: ', count)
 
         const config = {
           url: `http://localhost:3000/bot`,
+          // url: `http://10.8.28.177:3333/api/users/2/location`,
           method: 'POST',
           data: {
               "location": {
@@ -76,8 +77,11 @@ console.log('count: ', count)
           }
         axios(config)
         .then((response) => {
-          console.log(response.data);
+          console.log(response);
           count++
+        })
+        .catch((err) => {
+          throw new Error(err);
         });
 
       }, 1000);

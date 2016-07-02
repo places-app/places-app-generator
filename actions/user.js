@@ -15,6 +15,8 @@ exports.createUser = (req, res) => {
 
   const interval = Number(req.body.interval);
   const location = req.body.location;
+  const origin = req.body.origin;
+  const destination = req.body.destination;
   const type = req.body.type;
   let post;
   let move;
@@ -36,6 +38,8 @@ exports.createUser = (req, res) => {
     posting: post,
     moving: move,
     type,
+    origin,
+    destination,
     repCount: Math.floor(Math.random() * 51),
   };
 

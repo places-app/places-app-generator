@@ -7,7 +7,8 @@ exports.addUser = (user) => {
 
 exports.findAll = () => {
   return User.findAll({
-    attributes: ['id', 'email', 'name', 'imageUrl', 'repCount', 'location', 'interval', 'posting', 'moving', 'type'],
+    attributes: ['id', 'email', 'name', 'imageUrl',
+    'repCount', 'location', 'interval', 'posting', 'moving', 'type', 'origin', 'destination'],
   });
 };
 
