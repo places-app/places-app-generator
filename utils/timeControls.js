@@ -56,13 +56,3 @@ exports.stopPostInterval = (userId) => {
   clearInterval(intId[0].intervalId);
 };
 
-exports.startWalkInterval = (walker) => {
-  setInterval(() => {
-
-    walker();
-
-  }, 10000);
-
-};
-
-

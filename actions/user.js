@@ -15,6 +15,17 @@ exports.createUser = (req, res) => {
 
   const interval = Number(req.body.interval);
   const location = req.body.location;
+  const type = req.body.type;
+  let post;
+  let move;
+
+  if (type === 'posting') {
+    post = false;
+    move = null;
+  } else {
+    post = null;
+    move = false;
+  }
 
   const user = {
     name: faker.name.findName(),
@@ -22,7 +33,9 @@ exports.createUser = (req, res) => {
     imageUrl: faker.image.avatar(),
     location, // temp this will come from the request body
     interval,
-    posting: false,
+    posting: post,
+    moving: move,
+    type,
     repCount: Math.floor(Math.random() * 51),
   };
 
@@ -45,7 +58,7 @@ exports.createUser = (req, res) => {
       console.log(response.data);
       userController.updateExtId(createdUser.id, response.data)
       .then(() => {
-        res.sendStatus(200);
+        res.send(createdUser);
       });
     });
   })

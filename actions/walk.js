@@ -1,22 +1,39 @@
 const userController = require('../controllers/userController');
 const maps = require('../utils/mapsAPI');
 const axios = require('axios');
-const timeControls = require('../utils/timeControls');
+const _ = require('lodash');
+
+const intervalTracking = [];
 
 exports.createWalker = (req, res) => {
   const { userId, origin, destination } = req.body;
+
+  res.send({
+    moving: true,
+  });
 
   userController.getExtId(userId)
   .then((found) => {
     let count = 0;
     maps.getWalkRoute(origin, destination, (path) => {
-      
-      const intId = setInterval(() => {      
+      userController.toggleWalkingOn(userId)
+      .catch((err) => {
+        throw new Error(err);
+      });
+
+      const intervalId = setInterval(() => {      
 console.log('count: ', count)
         
         if (count + 1 === path.length) {
           console.log('done with walk:', count)
-          clearInterval(intId);
+
+          userController.toggleWalkingOff(userId)
+          .then(() => {
+            clearInterval(intervalId);
+          })
+          .catch((err) => {
+            throw new Error(err);
+          });
         }
 
         const config = {
@@ -63,7 +80,30 @@ console.log('count: ', count)
           count++
         });
 
-      }, 1000)
+      }, 1000);
+
+      intervalTracking.push({
+        userId,
+        intervalId,
+      });
+
     });
+  });
+};
+
+exports.stopWalker = (req, res) => {
+  const userId = req.body.userId;
+
+  userController.toggleWalkingOff(userId)
+  .then(() => {
+    const intId = _.remove(intervalTracking, (val) => val.userId === userId);
+    clearInterval(intId[0].intervalId);
+
+    res.send({
+      walking: false,
+    });
+  })
+  .catch((err) => {
+    throw new Error(err);
   });
 };

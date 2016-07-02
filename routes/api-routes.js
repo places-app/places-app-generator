@@ -8,5 +8,6 @@ module.exports = (app) => {
   app.post('/api/users/post', post.start);
   app.post('/api/users/post/stop', post.stop);
   app.post('/api/users/walk', walk.createWalker);
+  app.post('/api/users/walk/stop', walk.stopWalker);
   app.get('/api/users', user.retrieveAll);
 };

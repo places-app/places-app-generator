@@ -7,7 +7,7 @@ exports.addUser = (user) => {
 
 exports.findAll = () => {
   return User.findAll({
-    attributes: ['id', 'email', 'name', 'imageUrl', 'repCount', 'location', 'interval', 'posting']
+    attributes: ['id', 'email', 'name', 'imageUrl', 'repCount', 'location', 'interval', 'posting', 'moving', 'type'],
   });
 };
 
@@ -26,6 +26,29 @@ exports.toggleUserOn = (userId) => {
 exports.toggleUserOff = (userId) => {
   return User.update({
     posting: false,
+  },
+    {
+      where: {
+        id: userId,
+      },
+    });
+};
+
+exports.toggleWalkingOn = (userId) => {
+  return User.update({
+    moving: true,
+  },
+    {
+      where: {
+        id: userId,
+      },
+    });
+};
+
+// refactor to a toggle
+exports.toggleWalkingOff = (userId) => {
+  return User.update({
+    moving: false,
   },
     {
       where: {
