@@ -6,7 +6,7 @@ const _ = require('lodash');
 const intervalTracking = [];
 
 exports.createWalker = (req, res) => {
-  const { userId, origin, destination } = req.body;
+  const { userId, interval } = req.body;
 
   res.send({
     moving: true,
@@ -14,8 +14,9 @@ exports.createWalker = (req, res) => {
 
   userController.getExtId(userId)
   .then((found) => {
+console.log(found.origin, found.destination)
     let count = 0;
-    maps.getWalkRoute(origin, destination, (path) => {
+    maps.getWalkRoute(found.origin, found.destination, (path) => {
       userController.toggleWalkingOn(userId)
       .catch((err) => {
         throw new Error(err);
@@ -77,14 +78,14 @@ console.log('count: ', count)
           }
         axios(config)
         .then((response) => {
-          console.log(response);
-          count++
+          // console.log(response);
+          count++;
         })
         .catch((err) => {
           throw new Error(err);
         });
 
-      }, 1000);
+      }, interval);
 
       intervalTracking.push({
         userId,
