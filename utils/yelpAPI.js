@@ -1,10 +1,4 @@
-// Load environment variables
-if (process.env.NODE_ENV === 'development') {
-  require('dotenv').config({ path: './env/development.env' });
-} else {
-  require('dotenv').config({ path: './env/production.env' });
-}
-
+const apiUrl = `${process.env.PROTOCOL}${process.env.LOCATION_IP}:${process.env.LOCATION_PORT}`;
 const Yelp = require('yelp');
 const axios = require('axios');
 const userController = require('../controllers/userController');
@@ -30,7 +24,7 @@ exports.search = (userId, index, offset, cb) => {
     userController.getExtId(userId)
     .then((found) => {
       const config = {
-        url: `http://localhost:7000/api/users/${found.extId}/places`,
+        url: `${apiUrl}/api/users/${found.extId}/places`,
         method: 'POST',
         data: {
           location: {

@@ -1,12 +1,6 @@
 const polyline = require('polyline');
 const GoogleMapsAPI = require('googlemaps');
 
-if (process.env.NODE_ENV === 'development') {
-  require('dotenv').config({ path: './env/development.env' });
-} else {
-  require('dotenv').config({ path: './env/production.env' });
-}
-
 // returns an array of lat, lon pairs
 // const ret = polyline.decode('cigaAgli_N`CIt@?R@D?@?@A@ABE`@o@TU@CDEfA}ALQBEFKDMHYVcANo@@GJ]BIFWBE@A@ABCJG');
 

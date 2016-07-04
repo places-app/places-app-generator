@@ -2,6 +2,9 @@ const faker = require('faker');
 const userController = require('../controllers/userController');
 const axios = require('axios');
 
+const apiUrl = `${process.env.PROTOCOL}${process.env.LOCATION_IP}:${process.env.LOCATION_PORT}`;
+
+
 exports.retrieveAll = (req, res) => {
   userController.findAll()
   .then((bots) => {
@@ -46,7 +49,7 @@ exports.createUser = (req, res) => {
   userController.addUser(user)
   .then((createdUser) => {
     const config = {
-      url: 'http://localhost:7000/api/bot/add',
+      url: `${apiUrl}/api/bot/add`,
       method: 'POST',
       data: {
         email: createdUser.email,
@@ -76,7 +79,7 @@ exports.deleteUser = (req, res) => {
 
   userController.deleteUser(userId, (extId) => {
     const config = {
-      url: 'http://localhost:7000/api/bot/delete',
+      url: `${apiUrl}/api/bot/delete`,
       method: 'POST',
       data: {
         userId: extId,

@@ -1,3 +1,5 @@
+const locationUrl = `${process.env.PROTOCOL}${process.env.LOCATION_IP}:${process.env.LOCATION_PORT}`;
+
 const userController = require('../controllers/userController');
 const maps = require('../utils/mapsAPI');
 const axios = require('axios');
@@ -36,9 +38,9 @@ console.log('count: ', count)
             throw new Error(err);
           });
         }
-
+        LOCATION_SERVICE
         const config = {
-          url: `http://localhost:3000/bot`,
+          url: `${locationUrl}/api/users/${found.extId}/location`,
           // url: `http://10.8.28.177:3333/api/users/2/location`,
           method: 'POST',
           data: {
@@ -54,10 +56,10 @@ console.log('count: ', count)
                   // "extras": {   // <-- optional extras.  @see #getCurrentPosition for details
                   //     "foo": "bar"
                   // },
-                  // "activity": {
-                  //     "type": [still|on_foot|walking|running|in_vehicle|on_bicycle],
-                  //     "confidence": [0-100%]
-                  // },
+                  "activity": {
+                      "type": 'on_foot',
+                      "confidence": 100,
+                  },
                   // "geofence": {  // <-- Present only if a geofence was triggered at this location
                   //     "identifier": [String],
                   //     "action": [String ENTER|EXIT]            
