@@ -21,7 +21,7 @@ const intervalTracking = [];
 //   });
 // };
 
-exports.startPostInterval = (userId, interval) => {
+exports.startPostInterval = (userId, interval, location) => {
   let indexHolder = [];
   let offset = 0;
 
@@ -34,7 +34,7 @@ exports.startPostInterval = (userId, interval) => {
       offset += 20;
     }
 
-    yelp.search(userId, index, offset, () => {
+    yelp.search(userId, index, offset, location, () => {
       indexHolder.push(index);
     });  // cache results
   }, interval);

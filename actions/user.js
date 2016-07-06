@@ -2,7 +2,7 @@ const faker = require('faker');
 const userController = require('../controllers/userController');
 const axios = require('axios');
 
-const apiUrl = `${process.env.PROTOCOL}${process.env.LOCATION_IP}:${process.env.LOCATION_PORT}`;
+const apiUrl = `${process.env.PROTOCOL}${process.env.API_IP}:${process.env.API_PORT}`;
 
 
 exports.retrieveAll = (req, res) => {

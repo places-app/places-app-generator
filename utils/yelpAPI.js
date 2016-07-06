@@ -1,8 +1,8 @@
-const apiUrl = `${process.env.PROTOCOL}${process.env.LOCATION_IP}:${process.env.LOCATION_PORT}`;
+const apiUrl = `${process.env.PROTOCOL}${process.env.API_IP}:${process.env.API_PORT}`;
 const Yelp = require('yelp');
 const axios = require('axios');
 const userController = require('../controllers/userController');
-// const faker = require('faker');
+const faker = require('faker');
 
 const yelp = new Yelp({
   consumer_key: process.env.YP_KEY,
@@ -12,32 +12,33 @@ const yelp = new Yelp({
 });
 
 // See http://www.yelp.com/developers/documentation/v2/search_api
-exports.search = (userId, index, offset, cb) => {
-  yelp.search({ location: 'SF', offset })
+exports.search = (userId, index, offset, location, cb) => {
+  console.log('search location is: ', location);
+  yelp.search({ location: location, offset })
   .then((data) => {
     // const img = data.businesses[index].image_url;
-    // const img = faker.image.imageUrl();
     const lat = data.businesses[index].location.coordinate.latitude;
     const lng = data.businesses[index].location.coordinate.longitude;
     const name = data.businesses[index].name;
-
+    const note = faker.lorem.sentences();
+    const imageUrl = faker.image.imageUrl();
+// console.log(data)
     userController.getExtId(userId)
     .then((found) => {
       const config = {
         url: `${apiUrl}/api/users/${found.extId}/places`,
         method: 'POST',
         data: {
-          location: {
-            name,
-            lat,
-            lng,
-          },
-          note: 'hard coded note',
+          name,
+          lat,
+          lng,
+          note,
+          imageUrl,
         },
         withCredentials: true,
       };
 
-
+// console.log('in SEarch', location)
       axios(config)
       .then((response) => {
         cb()
@@ -48,5 +49,8 @@ exports.search = (userId, index, offset, cb) => {
     .catch((err) => {
       console.error(err);
     });
-  });
+  })
+  .catch(function (err) {
+    console.error('yelp error? ', err);
+  });;
 }
