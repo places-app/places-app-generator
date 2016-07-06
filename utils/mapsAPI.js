@@ -35,11 +35,15 @@ exports.getWalkRoute = (origin, destination, cb) => {
       
     console.log(result)
 
-    console.log( result.routes[0] );
-    console.log( polyline.decode(result.routes[0].overview_polyline.points) );
+    if (result.routes.length > 0) { 
+      console.log( result.routes[0] );
+      console.log( polyline.decode(result.routes[0].overview_polyline.points) );
 
-    const path = polyline.decode(result.routes[0].overview_polyline.points);
-    cb(path);
+      const path = polyline.decode(result.routes[0].overview_polyline.points);
+      cb(path);
+    } else {
+      cb(result.routes);
+    }
 
   });
 };
