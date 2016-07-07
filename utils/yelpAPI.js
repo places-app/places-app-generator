@@ -3,6 +3,7 @@ const Yelp = require('yelp');
 const axios = require('axios');
 const userController = require('../controllers/userController');
 const faker = require('faker');
+let note = '';
 
 const yelp = new Yelp({
   consumer_key: process.env.YP_KEY,
@@ -16,13 +17,18 @@ exports.search = (userId, index, offset, location, cb) => {
   console.log('search location is: ', location);
   yelp.search({ location: location, offset })
   .then((data) => {
-    // const img = data.businesses[index].image_url;
+
     const lat = data.businesses[index].location.coordinate.latitude;
     const lng = data.businesses[index].location.coordinate.longitude;
     const name = data.businesses[index].name;
-    const note = faker.lorem.sentences();
-    const imageUrl = faker.image.imageUrl();
-// console.log(data)
+    
+    if (data.businesses[index].snippet_text) {
+      note = data.businesses[index].snippet_text.split('\n')[0];
+    } else {
+      note = faker.lorem.sentences();
+    }
+    const imageUrl = faker.image.image();
+
     userController.getExtId(userId)
     .then((found) => {
       const config = {
